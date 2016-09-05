@@ -2,7 +2,7 @@ setup: dev-util
 
 dev-util:
 	sudo apt install vim
-	sudo apt-get install build-essential kernel-package libncurses5-dev fakeroot wget bzip2 xz-utils
+	sudo apt-get install build-essential kernel-package libncurses5-dev fakeroot wget bzip2 xz-utils cmake
 	sudo apt-get install libssl-dev libssl-doc
 	export CONCURRENCY_LEVEL=2
 	export CHOST="x86_64-pc-Linux-gnu"
@@ -14,7 +14,8 @@ dev-util:
 	make -C ~/kernel-build/linux-4.7.2/ mrproper
 	cp /boot/config-$(shell uname -r) ~/kernel-build/linux-4.7.2/.config
 	yes "" | make -C ~/kernel-build/linux-4.7.2/ oldconfig
-	make -C ~/kernel-build/linux-4.7.2/
+	sudo make -C ~/kernel-build/linux-4.7.2/
+	sudo make -C ~/kernel-build/linux-4.7.2/ modules_install install
 
 clean:
 	rm -rf ~/kernel-build/
