@@ -1,6 +1,9 @@
 setup: dev-util
 
 dev-util:
+	sudo apt-get install vim wget bzip2 xz-utils cmake
+
+kernel-setup:
 	sudo apt install vim
 	sudo apt-get install build-essential kernel-package libncurses5-dev fakeroot wget bzip2 xz-utils cmake
 	sudo apt-get install libssl-dev libssl-doc

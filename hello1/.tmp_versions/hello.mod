@@ -1,3 +1,2 @@
-/home/osboxes/mint-kernal/hello2/hello.ko
-/home/osboxes/mint-kernal/hello2/hello.o
-
+/home/osboxes/mint-kernal/hello1/hello.ko
+/home/osboxes/mint-kernal/hello1/hello.o

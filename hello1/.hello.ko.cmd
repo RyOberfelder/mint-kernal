@@ -1,1 +1,1 @@
-cmd_/home/osboxes/mint-kernal/hello2/hello.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/osboxes/mint-kernal/hello2/hello.ko /home/osboxes/mint-kernal/hello2/hello.o /home/osboxes/mint-kernal/hello2/hello.mod.o
+cmd_/home/osboxes/mint-kernal/hello1/hello.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/osboxes/mint-kernal/hello1/hello.ko /home/osboxes/mint-kernal/hello1/hello.o /home/osboxes/mint-kernal/hello1/hello.mod.o
