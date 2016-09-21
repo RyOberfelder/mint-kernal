@@ -1,0 +1,1 @@
+cmd_/home/osboxes/mint-kernal/hello4/hello4.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/osboxes/mint-kernal/hello4/hello4.ko /home/osboxes/mint-kernal/hello4/hello4.o /home/osboxes/mint-kernal/hello4/hello4.mod.o
