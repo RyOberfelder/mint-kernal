@@ -1,0 +1,1 @@
+cmd_/home/osboxes/mint-kernal/hello5/startstop.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/osboxes/mint-kernal/hello5/startstop.ko /home/osboxes/mint-kernal/hello5/startstop.o /home/osboxes/mint-kernal/hello5/startstop.mod.o

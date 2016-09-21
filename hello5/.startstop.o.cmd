@@ -1,0 +1,1 @@
+cmd_/home/osboxes/mint-kernal/hello5/startstop.o := ld -m elf_x86_64   -r -o /home/osboxes/mint-kernal/hello5/startstop.o /home/osboxes/mint-kernal/hello5/start.o /home/osboxes/mint-kernal/hello5/stop.o 
