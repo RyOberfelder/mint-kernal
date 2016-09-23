@@ -1,7 +1,7 @@
 setup: dev-util
 
 dev-util:
-	sudo apt-get install vim wget bzip2 xz-utils cmake
+	sudo apt-get install vim wget bzip2 xz-utils cmake build-essential
 
 kernel-setup:
 	sudo apt install vim
