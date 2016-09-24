@@ -64,3 +64,13 @@ The device will not that it can not do this operation in /var/log/syslog, and wi
 
 For more information on the specs of how it accomplishs all of that. look into the c file.
 
+
+## Usefull Sites
+
+https://www.linux.com/learn/kernel-newbie-corner-kernel-debugging-using-proc-sequence-files-part-1
+
+http://lxr.free-electrons.com/source/include/linux/proc_fs.h#L42
+
+http://lxr.free-electrons.com/source/include/linux/fs.h#L1670
+
+
