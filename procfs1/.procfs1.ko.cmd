@@ -1,0 +1,1 @@
+cmd_/home/osboxes/mint-kernal/procfs1/procfs1.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/osboxes/mint-kernal/procfs1/procfs1.ko /home/osboxes/mint-kernal/procfs1/procfs1.o /home/osboxes/mint-kernal/procfs1/procfs1.mod.o
