@@ -10,6 +10,12 @@
 
 #define procfs_name "helloworld"
 
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Oberfelder");
+MODULE_DESCRIPTION("Creates a simple thing proc file that tells you information when you cat it")
+MODULE_SUPPORTED_DEVICE("testdevice");
+
+
 /* function signatures */
 static ssize_t procfs_read(struct file *filp,   /* see include/linux/fs.h */
                            char *buffer,        /* buffer to fill with data */
@@ -53,25 +59,18 @@ static ssize_t procfs_read(struct file *filp,   /* see include/linux/fs.h */
                            size_t length,       /* length of the buffer */
                            loff_t * offset)
 {
-	int ret;
+	int ret = 0;
+	static int finished;
 	
-	printk(KERN_INFO "procfile_read (/proc/%s) called\n", procfs_name);
+	printk(KERN_INFO "procfs_read (/proc/%s) called\n", procfs_name);
 	
-	/* 
-	 * We give all of our information in one go, so if the use asks us if we have
-	 * more information the answer should always be no.
-	 * 
-	 * This is important because the standard read function from the libabry would
-	 * continue to issue the read system call until the kernel replies that it has
-	 * no more information, or until its buffer is filled
-	 */
-	if(offset > 0) {
-		/* we have finished read, return 0 */
-		ret = 0;
-	} else {
-		/* fill the buffer, return the buffer size */
-		ret = sprintf(buffer, "HelloWorld!\n");
+	if (finished){
+		printk(KERN_INFO "procfs_read: END\n");
+		finished = 0;
 	}
+
+	finished = 1;
+	ret = sprintf(buffer, "HelloWorld!\n");
 	
 	return ret;
 }
@@ -84,12 +83,11 @@ int build_helloworld(void) {
 		return -ENOMEM;
 	}
 	
-	// Our_Proc_File->read_proc = procfile_read;
-        // Our_Proc_File->owner     = THIS_MODULE;
-        // Our_Proc_File->mode      = S_IFREG | S_IRUGO;
-        // Our_Proc_File->uid       = 0;
-        // Our_Proc_File->gid       = 0;
-        // Our_Proc_File->size      = 37;
+	/*
+    	 * KUIDT_INIT is a macro defined in the file 'linux/uidgid.h'. KGIDT_INIT also appears here.
+ 	 */ 	 
+	proc_set_user(Our_Proc_File, KUIDT_INIT(0), KGIDT_INIT(0));
+	proc_set_size(Our_Proc_File, 37);
 
 	printk(KERN_INFO "/proc/%s created\n", procfs_name);
 	return 0; /* everything is ok */
@@ -97,7 +95,7 @@ int build_helloworld(void) {
 
 void exit_helloworld(void)
 {
-	remove_proc_entry(procfs_name, Our_Proc_File);
+	remove_proc_entry(procfs_name, NULL);
 	printk(KERN_INFO "/proc/%s removed \n", procfs_name);
 }
 

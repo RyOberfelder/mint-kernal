@@ -19,6 +19,8 @@ __used
 __attribute__((section("__versions"))) = {
 	{ 0xe89b6b83, __VMLINUX_SYMBOL_STR(module_layout) },
 	{ 0x36ef98b5, __VMLINUX_SYMBOL_STR(remove_proc_entry) },
+	{ 0x6d7368d1, __VMLINUX_SYMBOL_STR(proc_set_size) },
+	{ 0xd6621e8, __VMLINUX_SYMBOL_STR(proc_set_user) },
 	{ 0xd813562f, __VMLINUX_SYMBOL_STR(proc_create_data) },
 	{ 0x27e1a049, __VMLINUX_SYMBOL_STR(printk) },
 	{ 0xbdfb6dbb, __VMLINUX_SYMBOL_STR(__fentry__) },
@@ -30,4 +32,4 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "039994298764AF54549E447");
+MODULE_INFO(srcversion, "0ED2812C47DA02C65D63031");
