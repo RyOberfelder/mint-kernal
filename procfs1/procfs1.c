@@ -1,5 +1,5 @@
 /*
- * procfs.c - we are going to be creating a 'file' in /proc
+ * procfs1.c - we are going to be creating a 'file' in /proc
  *
  */
 #include<linux/init.h>
@@ -7,14 +7,20 @@
 #include<linux/kernel.h>
 #include<linux/fs.h> /* needed for the general fs */
 #include<linux/proc_fs.h> /* this is needed to use the proc fs */
+#include<asm/uaccess.h>  /* used for the copy to and from user functions  */
 
-#define procfs_name "helloworld"
+#define procfs_name "helloworld" /* This is where we define proc file name.*/
+#define PROCFS_MAX_SIZE 1024
+
+static char procfs_buffer[PROCFS_MAX_SIZE];
+
+/* This is how we  keep track of the number of bytes left to read */
+static unsigned long procfs_buffer_size = 0;
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Oberfelder");
 MODULE_DESCRIPTION("Creates a simple thing proc file that tells you information when you cat it")
 MODULE_SUPPORTED_DEVICE("testdevice");
-
 
 /* function signatures */
 static ssize_t procfs_read(struct file *filp,   /* see include/linux/fs.h */
@@ -22,9 +28,14 @@ static ssize_t procfs_read(struct file *filp,   /* see include/linux/fs.h */
                            size_t length,       /* length of the buffer */
                            loff_t * offset);
 
+static ssize_t procfs_write(struct file *filp,   /* see include/linux/fs.h */
+                           const char *buffer,  /* buffer to fill with data */
+                           size_t length,       /* length of the buffer */
+                           loff_t * offset);
+
+
 /**
  * This structure holds information about the proc/ file
- *
  */
 struct proc_dir_entry *Our_Proc_File;
 
@@ -32,49 +43,59 @@ struct proc_dir_entry *Our_Proc_File;
 static const struct file_operations proc_file_fops = {
  .owner = THIS_MODULE,
  .read  = procfs_read,
+ .write = procfs_write,
 };
 
-/* Here is where we are going tp put data into the proc fs file
- * Arguments
- * =========
- * 1. The buffer where the data is to be inserted, if you decide to use it.
- * 2. A pointer to a pointer to characters. This is useful if you do not want to use
- *    the buffer alloted by the kernel
- * 3. The current position in the file
- * 4. The size of the buffer in the first argument
- * 5. Write a "1" here to indicate EOF.
- * 6. A pointer to data (useful in case one common read for muliple /proc/... entries
- *
- * Useage and Return Value
- * =======================
- * A return value of zero means you have no further information at this time
- * (end of file). A negative return value is an error condition.
- * 
- * For More Information
- * ====================
- * I would read the comments dispursed through-out the code.
- */
 static ssize_t procfs_read(struct file *filp,   /* see include/linux/fs.h */
                            char *buffer,        /* buffer to fill with data */
                            size_t length,       /* length of the buffer */
                            loff_t * offset)
 {
-	int ret = 0;
-	static int finished;
+	/* section detailing if we have finished reading from the buffer */
+	static int finished = 0;
 	
-	printk(KERN_INFO "procfs_read (/proc/%s) called\n", procfs_name);
-	
-	if (finished){
+	if ( finished ) {
 		printk(KERN_INFO "procfs_read: END\n");
 		finished = 0;
+		return 0;
 	}
 
 	finished = 1;
-	ret = sprintf(buffer, "HelloWorld!\n");
+	/* does the error handing if copy to user has issue */
+	if ( copy_to_user(buffer, procfs_buffer, procfs_buffer_size) ) {
+		return -EFAULT;
+	}
 	
-	return ret;
+	printk(KERN_INFO "procfs_read: read %lu bytes\n", procfs_buffer_size);
+
+	return procfs_buffer_size;
+
 }
 
+static ssize_t procfs_write(struct file *filp,   /* see include/linux/fs.h */
+                           const char *buffer,  /* buffer to fill with data */
+                           size_t length,       /* length of the buffer */
+                           loff_t * offset)
+{
+	/* assures that max buffer size, is upheld */
+	if ( length > PROCFS_MAX_SIZE ) {
+		procfs_buffer_size = PROCFS_MAX_SIZE;
+	} else {
+		procfs_buffer_size = length;
+	}
+
+	if ( copy_from_user(procfs_buffer, buffer, procfs_buffer_size) ) {
+		return -EFAULT;
+	}
+
+	printk(KERN_INFO "procfs_write: write %lu bytes\n", procfs_buffer_size);	
+	return procfs_buffer_size;
+
+
+}
+
+
+static 
 int build_helloworld(void) {
 	Our_Proc_File = proc_create(procfs_name, 0644, NULL, &proc_file_fops);
 	if (!Our_Proc_File) {

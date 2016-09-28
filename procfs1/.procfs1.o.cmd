@@ -650,6 +650,12 @@ deps_/home/osboxes/mint-kernal/procfs1/procfs1.o := \
   arch/x86/include/uapi/asm/fcntl.h \
   include/uapi/asm-generic/fcntl.h \
   include/linux/proc_fs.h \
+  arch/x86/include/asm/uaccess.h \
+    $(wildcard include/config/x86/intel/usercopy.h) \
+    $(wildcard include/config/debug/strict/user/copy/checks.h) \
+  arch/x86/include/asm/smap.h \
+    $(wildcard include/config/x86/smap.h) \
+  arch/x86/include/asm/uaccess_64.h \
 
 /home/osboxes/mint-kernal/procfs1/procfs1.o: $(deps_/home/osboxes/mint-kernal/procfs1/procfs1.o)
 

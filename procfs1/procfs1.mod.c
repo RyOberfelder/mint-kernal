@@ -22,7 +22,9 @@ __attribute__((section("__versions"))) = {
 	{ 0x6d7368d1, __VMLINUX_SYMBOL_STR(proc_set_size) },
 	{ 0xd6621e8, __VMLINUX_SYMBOL_STR(proc_set_user) },
 	{ 0xd813562f, __VMLINUX_SYMBOL_STR(proc_create_data) },
+	{ 0x4f8b5ddb, __VMLINUX_SYMBOL_STR(_copy_to_user) },
 	{ 0x27e1a049, __VMLINUX_SYMBOL_STR(printk) },
+	{ 0x4f6b400b, __VMLINUX_SYMBOL_STR(_copy_from_user) },
 	{ 0xbdfb6dbb, __VMLINUX_SYMBOL_STR(__fentry__) },
 };
 
@@ -32,4 +34,4 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "0ED2812C47DA02C65D63031");
+MODULE_INFO(srcversion, "4A8B5B02089598299074CE3");
